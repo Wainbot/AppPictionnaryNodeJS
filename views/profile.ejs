@@ -1,0 +1,104 @@
+<% var title = 'Pictionnary - Tableau de bord' %>
+<% include head %>
+
+<div class="jumbotron text-center">
+    <a href="/paint" class="btn btn-primary btn-lg" id="btn-commencer-dessin">Commencer un dessin</a>
+
+    <br />
+    <br />
+    <br />
+
+    <table class="button-share">
+        <tr>
+            <td>
+                <div class="fb-share-button" data-href="http://paint.jeremyfroment.fr/" data-layout="button_count"></div>
+            </td>
+            <td>
+                <a href="https://twitter.com/share" class="twitter-share-button"{count} data-url="http://paint.jeremyfroment.fr/" data-lang="fr">Tweeter</a>
+            </td>
+            <td>
+                <div class="g-plus" data-action="share" data-annotation="bubble" data-height="24" data-href="http://paint.jeremyfroment.fr"></div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<% if (typeof allDraws != 'undefined') { %>
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Tous les dessins
+            </div>
+            <div class="panel-body">
+                <table class="table">
+                    <thead>
+                    <% if (allDraws.length > 0) { %>
+                        <% allDraws.forEach(function(paint) { %>
+                        <tr>
+                            <td class="text-center">
+                                <img src="<%= paint.dessin %>" width="30" height="30" alt="">
+                            </td>
+                            <td class="text-center" style="vertical-align: middle">Dessin de <a class="lien-profil" href="/profile/<%= paint.userId %>"><%= paint.prenom %></a></td>
+                            <td class="text-center">
+                                <a href="/guess/<%= paint.id %>" class="btn btn-primary">
+                                    Voir son dessin
+                                </a>
+                            </td>
+                        </tr>
+                        <% }); %>
+                    <% } else { %>
+                    <tr>
+                        <td class="text-center">
+                            Personne n'a encore fait de dessin !
+                            <br />
+                            Pour commencer une partie clique sur le bouton "Commencer un dessin".
+                        </td>
+                    </tr>
+                    <% } %>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+<% } %>
+
+<% if (typeof myDraws != 'undefined') { %>
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Mes dessins
+            </div>
+            <div class="panel-body">
+                <table class="table">
+                    <thead>
+                    <% if (myDraws.length > 0) { %>
+                        <% myDraws.forEach(function(paint) { %>
+                        <tr>
+                            <td class="text-center">
+                                <img src="<%= paint.dessin %>" width="30" height="30" alt="">
+                            </td>
+                            <td class="text-center" style="vertical-align: middle">Dessin n°<%= paint.id %></td>
+                            <td class="text-center">
+                                <a href="/guess/<%= paint.id %>" class="btn btn-primary">
+                                    Voir mon dessin
+                                </a>
+                            </td>
+                        </tr>
+                        <% }); %>
+                    <% } else { %>
+                    <tr>
+                        <td class="text-center">
+                            Tu n'as pas encore fait de dessin !
+                            <br />
+                            Pour commencer une partie clique sur le bouton "Commencer un dessin".
+                        </td>
+                    </tr>
+                    <% } %>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+<% } %>
+
+<% include foot %>

@@ -1,0 +1,82 @@
+<% var title = 'Pictionnary - Tableau de bord' %>
+<% include head %>
+
+<div class="jumbotron text-center">
+    <h1>Hi, my Lord</h1>
+</div>
+
+<% if (typeof users != 'undefined') { %>
+<div class="col-md-6">
+    <div class="panel panel-default">
+        <div class="panel-heading">Utilisateurs</div>
+        <div class="panel-body">
+            <table class="table">
+                <thead>
+                <% if (users.length > 0) { %>
+                <% users.forEach(function(user) { %>
+                <tr>
+                    <td class="text-center">
+                        <img src="<%= user.profilepic %>" width="30" height="30" alt="" class="img-circle">
+                    </td>
+                    <td class="text-center" style="vertical-align: middle">
+                        <%= user.prenom %>&nbsp;<%= user.nom %>
+                    </td>
+                    <td class="text-center">
+                        <a href="/profile/<%= user.id %>" class="btn btn-primary">
+                            Voir son profil
+                        </a>
+                    </td>
+                </tr>
+                <% }); %>
+                <% } else { %>
+                <tr>
+                    <td class="text-center">
+                        Personne ne s'est encore inscrit !
+                    </td>
+                </tr>
+                <% } %>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+<% } %>
+
+<% if (typeof draws != 'undefined') { %>
+<div class="col-md-6">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Dessins
+        </div>
+        <div class="panel-body">
+            <table class="table">
+                <thead>
+                <% if (draws.length > 0) { %>
+                <% draws.forEach(function(draw) { %>
+                <tr>
+                    <td class="text-center">
+                        <img src="<%= draw.dessin %>" width="30" height="30" alt="">
+                    </td>
+                    <td class="text-center" style="vertical-align: middle">Dessin de <a class="lien-profil" href="/profile/<%= draw.userId %>"><%= draw.prenom %></a></td>
+                    <td class="text-center">
+                        <a href="/guess/<%= draw.id %>" class="btn btn-primary">
+                            Voir son dessin
+                        </a>
+                    </td>
+                </tr>
+                <% }); %>
+                <% } else { %>
+                <tr>
+                    <td class="text-center">
+                        Personne n'a encore fait de dessin !
+                    </td>
+                </tr>
+                <% } %>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+<% } %>
+
+<% include foot %>

@@ -1,0 +1,191 @@
+@import "font-awesome.min.css";
+
+@font-face { font-family: 'Gotham Rounded'; src: url('/fonts/Gotham-Rounded.otf'); }
+@font-face {
+  font-family: 'Lobster';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Lobster'), local('Lobster-Regular'), url('/fonts/Lobster.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+
+$bleu     : #2980b9;
+$midnight : #2c3e50;
+$gris     : #333;
+$red      : #E74C3C;
+$green    : #00a99d;
+
+body {
+  background: #eee;
+  color: #4B4B4B;
+  font-family: 'Gotham Rounded', Georgia, Times, serif;
+  letter-spacing: -1px;
+}
+
+.navbar {
+  background: $gris;
+  border: none;
+  border-bottom: 2px solid $green;
+  border-radius: 0;
+  min-height: 60px;
+}
+
+.navbar-default .navbar-brand {
+  color: #FFF;
+  font-family: 'Lobster', 'Gotham Rounded', Georgia, Times, serif;
+  letter-spacing: normal;
+  padding: 18px 15px;
+  font-size: 20pt !important;
+
+  &:hover {
+    color: $green;
+  }
+}
+
+.navbar-toggle {
+  &:focus, &:hover {
+    background: #FFF !important;
+  }
+}
+
+ul li {
+  list-style-type: none;
+}
+
+.panel {
+  -moz-box-shadow: 2px 2px 5px 0 #484848;
+  -webkit-box-shadow: 2px 2px 5px 0 #484848;
+  -o-box-shadow: 2px 2px 5px 0 #484848;
+  box-shadow: 2px 2px 5px 0 #484848;
+  border: none;
+
+  .panel-heading {
+    background-color: $green;
+    color: #FFF;
+    font-family: 'Lobster', 'Gotham Rounded', Georgia, Times, serif !important;
+    letter-spacing: normal;
+    font-variant: all-petite-caps;
+    font-size: 16pt;
+  }
+}
+
+.btn-danger {
+  background-color: $red;
+
+  &:hover, &:active:focus {
+    background-color: $red;
+  }
+}
+
+.btn-primary {
+  background-color: $gris;
+
+  &:hover, &:active:focus {
+    background-color: $gris;
+  }
+}
+
+.btn-success {
+  background-color: $green;
+
+  &:hover, &:active:focus {
+    background-color: $green;
+  }
+}
+
+#myCanvas {
+  cursor: crosshair !important;
+  border: 2px solid $gris;
+  margin-top: 50px;
+  background: #FFF;
+  position: absolute;
+  left: 50%;
+  margin-left: -150px;
+  margin-bottom: 50px;
+}
+
+#myCanvas2 {
+  cursor: not-allowed !important;
+  border: 2px solid $gris;
+  margin-top: 20px;
+  background: #FFF;
+  position: absolute;
+  left: 50%;
+  margin-left: -150px;
+  margin-bottom: 50px;
+}
+
+#btn-retour-guess {
+  position: fixed;
+  right: 10px;
+  top: 10px;
+}
+
+#my-tools {
+  cursor: move;
+  position: fixed;
+  top: 10px;
+  right: 10px;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+.btn {
+  border: none;
+  border-radius: 3px;
+  -moz-box-shadow: 1px 1px 5px 0 #484848;
+  -webkit-box-shadow: 1px 1px 5px 0 #484848;
+  -o-box-shadow: 1px 1px 5px 0 #484848;
+  box-shadow: 1px 1px 5px 0 #484848;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  &.btn-link {
+    box-shadow: none;
+  }
+}
+
+.navbar-default .navbar-text {
+  color: #FFF;
+}
+
+.jumbotron {
+  background: $green;
+  color: #EEE;
+}
+
+#btn-commencer-dessin {
+  font-family: 'Lobster', 'Gotham Rounded', Georgia, Times, serif !important;
+  letter-spacing: normal;
+  font-size: 24pt;
+}
+
+#img-profil {
+  &:hover {
+    transform: scale(1.3);
+  }
+}
+
+.icon-bar {
+  background-color: $green !important;
+}
+
+.button-share {
+  width: 300px;
+  margin: auto;
+
+  td {
+    padding: 10px;
+    vertical-align: middle;
+
+    a {
+      &:link {
+        text-decoration: none !important;
+      }
+    }
+  }
+}

@@ -1,0 +1,151 @@
+<% var title = 'Pictionnary - Inscription' %>
+<% include head %>
+
+<div class="col-md-10 col-md-offset-1 col-xs-12 col-xs-offset-0">
+    <br/>
+    <div class="panel panel-default">
+        <div class="panel-heading text-center">Modification de mon profil</div>
+        <div class="panel-body">
+            <form class="form-horizontal" action="/profile-edit" method="post" name="inscription">
+                <span class="required_notification">Les champs obligatoires sont indiqués par *</span>
+                <br/>
+                <br/>
+                <input type="hidden" value="<%= profile.id %>" name="id">
+                <input type="hidden" value="<%= profile.id_social %>" name="id_social">
+                <div class="form-group">
+                    <label class="col-md-3 control-label" for="nom">Nom :</label>
+                    <div class="col-md-9">
+                        <input class="form-control input-md" type="text" name="nom" id="nom" placeholder="nom" value="<%= (typeof profile.nom != 'undefined') ? profile.nom : '' %>"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label" for="prenom">Prénom* :</label>
+                    <div class="col-md-9">
+                        <input class="form-control input-md" type="text" name="prenom" id="prenom" required placeholder="prénom" value="<%= (typeof profile.prenom != 'undefined') ? profile.prenom : '' %>"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label" for="telephone">Téléphone :</label>
+                    <div class="col-md-9">
+                        <input class="form-control input-md" type="tel" name="tel" id="telephone" value="<%= (typeof profile.tel != 'undefined') ? profile.tel : '' %>"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label" for="site_web">Site Web :</label>
+                    <div class="col-md-9">
+                        <input class="form-control input-md" type="url" name="website" id="site_web" value="<%= (typeof profile.website != 'undefined') ? profile.website : '' %>"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label" for="sexe-h">Sexe :</label>
+                    <div class="col-md-9">
+                        <div class="radio">
+                            <label for="sexe-h">
+                                <input type="radio" name="sexe" id="sexe-h" value="H" <%= (typeof profile.sexe != 'undefined') ? ((profile.sexe == 'H') ? 'checked' : '') : 'checked' %>/>
+                                Homme
+                            </label>
+                            &nbsp;
+                            <label for="sexe-f">
+                                <input type="radio" name="sexe" id="sexe-f" value="F" <%= (typeof profile.sexe != 'undefined') ? ((profile.sexe == 'F') ? 'checked' : '') : '' %>/>
+                                Femme
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label" for="birthdate">Date de naissance* :</label>
+                    <div class="col-md-9">
+                        <input class="form-control input-md" type="date" name="birthdate" id="birthdate" required value="<%= (typeof profile.birthdate != 'undefined') ? (new Date(profile.birthdate)).getFullYear() + "-" + ("0" + (new Date(profile.birthdate).getMonth() + 1)).slice(-2) + "-" + ("0" + new Date(profile.birthdate).getDate()).slice(-2) : '' %>"/>
+                        <span class="help-block">Format attendu "JJ/MM/AAAA"</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label" for="ville">Ville :</label>
+                    <div class="col-md-9">
+                        <input class="form-control input-md" type="text" name="ville" id="ville" placeholder="ville" value="<%= (typeof profile.ville != 'undefined') ? profile.ville : '' %>"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label" for="taille">Taille :</label>
+                    <div class="col-md-9">
+                        <input class="input-md" type="range" name="taille" id="taille" min="0" max="2.50" step="0.01" value="<%= (typeof profile.taille != 'undefined') ? profile.taille : '' %>"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label" for="couleur_preferee">Couleur préférée :</label>
+                    <div class="col-md-9">
+                        <input class="form-control input-md" type="color" name="couleur" id="couleur_preferee" value="<%= (typeof profile.couleur != 'undefined') ? ((profile.couleur.length>6)?profile.couleur:"#"+profile.couleur) : '#000000' %>"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label" for="profilepicfile">Photo de profil :</label>
+                    <div class="col-md-9">
+                        <input class="input-file" type="file" id="profilepicfile" onchange="loadProfilePic(this)"/>
+                        <span class="help-block">Choisissez une image.</span>
+                        <input type="hidden" name="profilepic" id="profilepic" value="<%= profile.profilepic %>"/>
+                        <canvas id="preview" width="0" height="0"></canvas>
+                    </div>
+                    <script type="text/javascript">
+                        loadProfilePic = function (e) {
+                            var canvas = document.getElementById("preview");
+                            var ctx = canvas.getContext("2d");
+
+                            ctx.setFillColor = "white";
+                            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                            canvas.width = 0;
+                            canvas.height = 0;
+                            var file = document.getElementById("profilepicfile").files[0];
+                            var img = document.createElement("img");
+                            var reader = new FileReader();
+
+                            reader.onload = function (e) {
+                                if (!file.type.match(/image.*/)) {
+                                    document.getElementById("profilepicfile").setCustomValidity("Il faut télécharger une image.");
+                                    document.getElementById("profilepicfile").value = "";
+                                } else {
+                                    img.src = e.target.result;
+                                    document.getElementById("profilepicfile").setCustomValidity("");
+                                    var MAX_WIDTH = 96;
+                                    var MAX_HEIGHT = 96;
+                                    var width = img.width;
+                                    var height = img.height;
+                                    var ratio = null;
+
+                                    if (width > height) {
+                                        if (width > MAX_WIDTH) {
+                                            ratio = width / MAX_WIDTH;
+                                            width = MAX_WIDTH;
+                                            height = height / ratio;
+                                        }
+                                    } else {
+                                        if (height > MAX_HEIGHT) {
+                                            ratio = height / MAX_HEIGHT;
+                                            height = MAX_HEIGHT;
+                                            width = width / ratio;
+                                        }
+                                    }
+
+                                    canvas.width = width;
+                                    canvas.height = height;
+                                    ctx.drawImage(img, 0, 0, width, height);
+                                    document.getElementById("profilepic").value = canvas.toDataURL("image/png");
+                                }
+                            };
+
+                            reader.readAsDataURL(file);
+                        };
+                    </script>
+                </div>
+                <br/>
+                <div class="form-group text-center">
+                    <a href="/profile/<%= profile.id %>" class="btn btn-primary">Annuler</a>
+                    &nbsp;
+                    <input class="btn btn-success" type="submit" value="Mettre à jour">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<% include foot %>

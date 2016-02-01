@@ -1,0 +1,152 @@
+<% var title = 'Pictionnary - Zone de dessinage' %>
+<% include head %>
+
+<script type="text/javascript">
+    var sizes = [8, 20, 44, 90];
+    var size, color;
+    var drawingCommands = [];
+
+    var setColor = function() {
+        color = document.getElementById('color').value;
+    };
+
+    var setSize = function() {
+        size = sizes[document.getElementById('size').value];
+    };
+
+    window.onload = function() {
+        var canvas    = document.getElementById('myCanvas');
+        canvas.width  = 300;
+        canvas.height = 400;
+        var oldX,oldY = null;
+        var context   = canvas.getContext('2d');
+
+        setSize();
+        setColor();
+
+        document.getElementById('size').onchange  = setSize;
+        document.getElementById('color').onchange = setColor;
+
+        window.onresize = function() {
+            var tools = document.getElementById("my-tools");
+
+            if (tools.width + tools.offsetLeft > window.innerWidth) {
+                tools.offsetLeft = window.innerWidth - tools.width - 20;
+            }
+        };
+
+        var isDrawing = false;
+
+        var startDrawing = function(e) {
+            drawingCommands.push({
+                command : "start",
+                x : e.x - this.offsetLeft - 2,
+                y : e.y - this.offsetTop - 2,
+                size: size / 2,
+                color: color
+            });
+
+            context.lineJoin = 'round';
+            context.lineWidth = size / 2;
+            context.strokeStyle = color;
+            context.beginPath();
+            context.moveTo(e.x - this.offsetLeft - 2, e.y - this.offsetTop - 2);
+            context.lineTo(e.x - this.offsetLeft - 2, e.y - this.offsetTop - 2);
+            context.closePath();
+            context.stroke();
+
+            oldX = e.x - this.offsetLeft - 2;
+            oldY = e.y - this.offsetTop - 2;
+
+            isDrawing = true;
+        };
+
+        var stopDrawing = function(e) {
+            isDrawing = false;
+        };
+
+        var draw = function(e) {
+            if (isDrawing) {
+                drawingCommands.push({
+                    command : "draw",
+                    x : e.x - this.offsetLeft - 2,
+                    y : e.y - this.offsetTop - 2
+                });
+
+                context.beginPath();
+                context.moveTo(oldX, oldY);
+                context.lineTo(e.x - this.offsetLeft - 2, e.y - this.offsetTop - 2);
+                context.closePath();
+                context.stroke();
+
+                oldX = e.x - this.offsetLeft - 2;
+                oldY = e.y - this.offsetTop - 2;
+            }
+        };
+
+        canvas.onmousedown = startDrawing;
+        canvas.onmouseout  = stopDrawing;
+        canvas.onmouseup   = stopDrawing;
+        canvas.onmousemove = draw;
+
+        document.getElementById('restart').onclick = function() {
+            drawingCommands.push({
+                command : "clear"
+            });
+
+            context.clearRect(0, 0, canvas.width, canvas.height);
+        };
+
+        document.getElementById('validate').onclick = function() {
+            document.getElementById('drawingCommands').value = JSON.stringify(drawingCommands);
+            document.getElementById('picture').value = canvas.toDataURL();
+        };
+
+        jQuery("#my-tools").draggable();
+    };
+</script>
+
+<a href="/profile" class="btn btn-success">
+    <i class="fa fa-home" style="font-size: 18pt; height: 30px; line-height: 30px;"></i>
+</a>
+
+<% if (user.admin == 1) { %>
+&nbsp;
+<a href="/admin" class="btn btn-success">
+    <i class="fa fa-tachometer" style="font-size: 18pt; height: 30px; line-height: 30px;"></i>
+</a>
+<% } %>
+
+<canvas id="myCanvas" width="300" height="400"></canvas>
+
+<div class="panel panel-default col-md-3" id="my-tools">
+    <div class="panel-body">
+        <form name="tools" action="/paint" method="post" class="form-horizontal">
+            <div class="form-group">
+                <label class="col-md-3 control-label" for="size">Taille&nbsp;:</label>
+                <div class="col-md-9">
+                    <input class="input-md" type="range" id="size" min="0" max="3" step="1" value="0"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-3 control-label" for="color">Couleur&nbsp;:</label>
+                <div class="col-md-9">
+                    <input class="form-control input-md" type="color" id="color" value="#<%= user.couleur %>"/>
+                </div>
+            </div>
+
+            <br />
+
+            <div class="form-group text-center">
+                <input class="btn btn-primary" id="restart" type="button" value="Recommencer"/>
+                &nbsp;
+                <input type="hidden" id="drawingCommands" name="drawingCommands"/>
+                <input type="hidden" id="picture" name="picture"/>
+                <input class="btn btn-success" id="validate" type="submit" value="Sauvegarder"/>
+            </div>
+        </form>
+    </div>
+</div>
+
+<% include foot %>

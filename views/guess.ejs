@@ -1,0 +1,95 @@
+<% var title = 'Pictionnary - Visualisation de dessin' %>
+<% include head %>
+
+<a href="/profile" class="btn btn-success">
+    <i class="fa fa-home" style="font-size: 18pt; height: 30px; line-height: 30px;"></i>
+</a>
+<table class="button-share" style="float: right;">
+    <tr>
+        <td>
+            <div class="fb-share-button" data-href="http://paint.jeremyfroment.fr/" data-layout="button_count"></div>
+        </td>
+        <td>
+            <a href="https://twitter.com/share" class="twitter-share-button"{count} data-url="http://paint.jeremyfroment.fr/" data-lang="fr">Tweeter</a>
+        </td>
+        <td>
+            <div class="g-plus" data-action="share" data-annotation="bubble" data-height="24" data-href="http://paint.jeremyfroment.fr"></div>
+        </td>
+    </tr>
+</table>
+
+<% if (typeof draw != 'undefined') { %>
+    <% if (draw.userId != user.id) { %>
+        <h1 class="text-center">Dessin de <a href="/profile/<%= draw.userId %>"><%= draw.prenom %></a></h1>
+    <% } else { %>
+        <h1 class="text-center">Mon dessin</h1>
+    <% } %>
+    <script type="text/javascript">
+        var size, color;
+        var oldX, oldY;
+        var drawingCommands = <%- draw.commandes %>
+
+        window.onload = function() {
+            var canvas    = document.getElementById('myCanvas2');
+            canvas.width  = 300;
+            canvas.height = 400;
+            var context   = canvas.getContext('2d');
+
+            var draw = function(c) {
+                context.beginPath();
+
+                if (c.command == "draw") {
+                    context.moveTo(oldX, oldY);
+                    context.lineTo(c.x, c.y);
+                } else {
+                    context.lineJoin    = 'round';
+                    context.lineWidth   = c.size;
+                    context.strokeStyle = c.color;
+                    context.moveTo(c.x, c.y);
+                    context.lineTo(c.x, c.y);
+                }
+
+                context.closePath();
+                context.stroke();
+
+                oldX = c.x;
+                oldY = c.y;
+            };
+
+            var clear = function() {
+                context.clearRect(0, 0, canvas.width, canvas.height);
+            };
+
+            var i = 0;
+            var iterate = function() {
+                if (i >= drawingCommands.length) {
+                    return;
+                }
+
+                var c = drawingCommands[i];
+
+                switch (c.command) {
+                    case "start":
+                    case "draw":
+                        draw(c);
+                        break;
+                    case "clear":
+                        clear();
+                        break;
+                    default:
+                        console.error("Cette commande n'existe pas "+ c.command);
+                }
+
+                i++;
+                setTimeout(iterate,30);
+            };
+
+            iterate();
+        };
+    </script>
+    <canvas id="myCanvas2" width="300" height="400"></canvas>
+<% } else { %>
+
+<% } %>
+
+<% include foot %>

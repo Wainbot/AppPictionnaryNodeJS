@@ -1,0 +1,177 @@
+<% var title = 'Pictionnary - Profil' %>
+<% include head %>
+
+<div class="col-md-12" style="min-height: 60px;">
+    <a href="/profile" class="btn btn-success">
+        <i class="fa fa-home" style="font-size: 18pt; height: 30px; line-height: 30px;"></i>
+    </a>
+
+    <% if (user.admin == 1) { %>
+        &nbsp;
+        <a href="/admin" class="btn btn-success">
+            <i class="fa fa-tachometer" style="font-size: 18pt; height: 30px; line-height: 30px;"></i>
+        </a>
+    <% } %>
+
+    <% if (profile.id == user.id) { %>
+        &nbsp;
+        <button class="btn btn-danger" data-toggle="modal" data-target="#myModal" style="float: right;">
+            Supprimer mon compte
+        </button>
+    <% } %>
+
+    <% if (user.admin == 1 && profile.id != user.id) { %>
+        &nbsp;
+        <button class="btn btn-danger" data-toggle="modal" data-target="#yourModal" style="float: right;">
+            Supprimer son compte
+        </button>
+    <% } %>
+</div>
+
+<div class="col-md-6">
+    <div class="panel panel-default">
+        <div class="panel-heading text-center" style="font-size: 20pt;">
+            <img src="<%= (typeof profile.profilepic != 'undefined') ? profile.profilepic : "/img/user.png" %>" width="150" height="150" class="img-circle hidden-xs">
+            <br class="hidden-xs"/>
+            <%= profile.prenom %>&nbsp;<%= (typeof profile.nom != 'undefined') ? profile.nom : '' %>
+            <% if (profile.id == user.id || user.admin == 1) { %>
+                <a href="/profile-edit/<%= profile.id %>" class="btn btn-primary" style="float: right;">
+                    <i class="fa fa-pencil"></i>
+                </a>
+            <% } %>
+        </div>
+        <div class="panel-body" style="padding: 0;">
+            <table class="table table-striped" style="margin-bottom: 0">
+                <tr>
+                    <td>Email</td>
+                    <td><%= profile.email %></td>
+                </tr>
+                <tr>
+                    <td>Téléphone</td>
+                    <td><%= profile.tel %></td>
+                </tr>
+                <tr>
+                    <td>Site Web</td>
+                    <td>
+                        <a href="<%= profile.website %>" target="_blank"><%= profile.website %></a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Sexe</td>
+                    <td><%= (profile.sexe == 'H') ? "Homme" : "Femme" %></td>
+                </tr>
+                <tr>
+                    <td>Date de naissance</td>
+                    <td><%= new Date(profile.birthdate).getDate() %>/<%= new Date(profile.birthdate).getMonth()+1 %>/<%= new Date(profile.birthdate).getFullYear() %></td>
+                </tr>
+                <tr>
+                    <td>Ville</td>
+                    <td><%= profile.ville %></td>
+                </tr>
+                <tr>
+                    <td>Taille</td>
+                    <td><%= profile.taille | 0 %>m</td>
+                </tr>
+                <tr>
+                    <td>Couleur préférée</td>
+                    <td>
+                        <div style="width:20px; height: 20px; background: #<%= profile.couleur %>; border-radius: 50%;"></div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<% if (typeof draws != 'undefined') { %>
+<div class="col-md-6">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <% if (profile.id == user.id) { %>
+                Mes dessins
+            <% } else { %>
+                Ses dessins
+            <% } %>
+        </div>
+        <div class="panel-body">
+            <table class="table">
+                <thead>
+                <% if (draws.length > 0) { %>
+                <% draws.forEach(function(paint) { %>
+                <tr>
+                    <td class="text-center">
+                        <img src="<%= paint.dessin %>" width="30" height="30" alt="">
+                    </td>
+                    <td class="text-center" style="vertical-align: middle">Dessin n°<%= paint.id %></td>
+                    <td class="text-center">
+                        <a href="/guess/<%= paint.id %>" class="btn btn-primary">
+                            <% if (profile.id == user.id) { %>
+                                Voir mon dessin
+                            <% } else { %>
+                                Voir son dessin
+                            <% } %>
+                        </a>
+                    </td>
+                </tr>
+                <% }); %>
+                <% } else { %>
+                <tr>
+                    <td class="text-center">
+                        <% if (profile.id == user.id) { %>
+                            Tu n'as pas encore fait de dessin !
+                        <% } else { %>
+                            Il n'a pas encore fait de dessin !
+                        <% } %>
+                        <br />
+                        Pour commencer une partie clique sur le bouton "Commencer un dessin".
+                    </td>
+                </tr>
+                <% } %>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+<% } %>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-center" style="border: none;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Suppression</h4>
+            </div>
+            <div class="modal-body text-center">
+                Êtes-vous certain de vouloir supprimer votre compte Pictionnary ?
+            </div>
+            <div class="modal-footer" style="border: none;">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Annuler</button>
+                <a href="/delete" class="btn btn-danger">
+                    Supprimer mon compte
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="yourModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-center" style="border: none;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Suppression</h4>
+            </div>
+            <div class="modal-body text-center">
+                Êtes-vous certain de vouloir supprimer son compte Pictionnary ?
+            </div>
+            <div class="modal-footer" style="border: none;">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Annuler</button>
+                <a href="/delete/<%= profile.id %>" class="btn btn-danger">
+                    Supprimer son compte
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<% include foot %>

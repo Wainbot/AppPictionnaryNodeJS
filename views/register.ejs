@@ -1,0 +1,217 @@
+<% var title = 'Pictionnary - Inscription' %>
+<% include head %>
+
+<div class="col-md-10 col-md-offset-1 col-xs-12 col-xs-offset-0">
+    <br/>
+    <div class="panel panel-default">
+        <div class="panel-heading text-center">Inscription</div>
+        <div class="panel-body">
+            <form class="form-horizontal" action="/register" method="post" name="inscription">
+                <span class="required_notification">Les champs obligatoires sont indiqués par *</span>
+                <br/>
+                <br/>
+                <div class="form-group">
+                    <label class="col-md-3 control-label" for="email">E-mail* :</label>
+                    <div class="col-md-9">
+                        <input class="form-control input-md" type="email" name="email" id="email" autofocus required/>
+                        <span class="help-block">Format attendu "name@something.com"</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label" for="mdp1">Mot de passe* :</label>
+                    <div class="col-md-9">
+                        <input class="form-control input-md" type="password" name="password" id="mdp1"
+                               pattern="[a-zA-Z0-9]{6,8}" onkeyup="validateMdp2()"
+                               title="Le mot de passe doit contenir de 6 à 8 caractères alphanumériques." required>
+                        <span class="help-block">De 6 à 8 caractères alphanumériques.</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label" for="mdp2">Confirmez mot de passe* :</label>
+                    <div class="col-md-9">
+                        <input class="form-control input-md" type="password" id="mdp2" required onkeyup="validateMdp2()">
+                        <span class="help-block">Les mots de passes doivent être égaux.</span>
+                    </div>
+                    <script>
+                        validateMdp2 = function (e) {
+                            var mdp1 = document.getElementById('mdp1');
+                            var mdp2 = document.getElementById('mdp2');
+                            if (/^[a-zA-Z0-9]{6,8}$/.exec(mdp1.value) && mdp1.value == mdp2.value) {
+                                document.getElementById('mdp2').setCustomValidity('');
+                            } else {
+                                document.getElementById('mdp2').setCustomValidity('Les mots de passes doivent être égaux.');
+                            }
+                        }
+                    </script>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label" for="nom">Nom :</label>
+                    <div class="col-md-9">
+                            <input class="form-control input-md" type="text" name="nom" id="nom" placeholder="nom" value="<%= (typeof nom != 'undefined') ? nom : '' %>"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label" for="prenom">Prénom* :</label>
+                    <div class="col-md-9">
+                        <input class="form-control input-md" type="text" name="prenom" id="prenom" required placeholder="prénom" value="<%= (typeof prenom != 'undefined') ? prenom : '' %>"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label" for="telephone">Téléphone :</label>
+                    <div class="col-md-9">
+                        <input class="form-control input-md" type="tel" name="tel" id="telephone" value="<%= (typeof tel != 'undefined') ? tel : '' %>"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label" for="site_web">Site Web :</label>
+                    <div class="col-md-9">
+                        <input class="form-control input-md" type="url" name="website" id="site_web" value="<%= (typeof website != 'undefined') ? website : '' %>"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label" for="sexe-h">Sexe :</label>
+                    <div class="col-md-9">
+                        <div class="radio">
+                            <label for="sexe-h">
+                                <input type="radio" name="sexe" id="sexe-h" value="H" checked/>
+                                Homme
+                            </label>
+                            &nbsp;
+                            <label for="sexe-f">
+                                <input type="radio" name="sexe" id="sexe-f" value="F"/>
+                                Femme
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label" for="birthdate">Date de naissance* :</label>
+                    <div class="col-md-9">
+                        <input class="form-control input-md" type="date" name="birthdate" id="birthdate" required onchange="computeAge()" value="<%= (typeof birthdate != 'undefined') ? birthdate : '' %>"/>
+                        <span class="help-block">Format attendu "JJ/MM/AAAA"</span>
+                    </div>
+                    <script>
+                        computeAge = function (e) {
+                            try {
+                                var dateNow = new Date(Date.now());
+                                var dateBirthday = new Date(Date.parse(document.getElementById("birthdate").valueAsDate));
+                                var age = dateNow.getYear() - dateBirthday.getYear();
+
+                                if (dateNow.getMonth() < dateBirthday.getMonth()) {
+                                    age--;
+                                } else {
+                                    if (dateNow.getDate() > dateBirthday.getDate() && dateNow.getMonth() == dateBirthday.getMonth()) {
+                                        age--;
+                                    }
+                                }
+
+                                document.getElementById("age").value = age;
+                            } catch (e) {
+                                document.getElementById("age").value = null;
+                            }
+                        };
+
+                        <% if (typeof birthdate != 'undefined') { %>
+                            window.onload = function() {
+                                computeAge();
+                            };
+                        <% } %>
+                    </script>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label" for="age">Age:</label>
+                    <div class="col-md-9">
+                        <input class="form-control input-md" type="number" id="age" disabled/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label" for="ville">Ville :</label>
+                    <div class="col-md-9">
+                        <input class="form-control input-md" type="text" name="ville" id="ville" placeholder="ville" value="<%= (typeof ville != 'undefined') ? ville : '' %>"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label" for="taille">Taille :</label>
+                    <div class="col-md-9">
+                        <input class="input-md" type="range" name="taille" id="taille" min="0" max="2.50" step="0.01" value="<%= (typeof taille != 'undefined') ? taille : '' %>"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label" for="couleur_preferee">Couleur préférée :</label>
+                    <div class="col-md-9">
+                        <input class="form-control input-md" type="color" name="couleur" id="couleur_preferee" value="<%= (typeof couleur != 'undefined') ? "#"+couleur : '#000000' %>"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label" for="profilepicfile">Photo de profil :</label>
+                    <div class="col-md-9">
+                        <input class="input-file" type="file" id="profilepicfile" onchange="loadProfilePic(this)"/>
+                        <span class="help-block">Choisissez une image.</span>
+                        <input type="hidden" name="profilepic" id="profilepic"/>
+                        <canvas id="preview" width="0" height="0"></canvas>
+                    </div>
+                    <script type="text/javascript">
+                        loadProfilePic = function (e) {
+                            var canvas = document.getElementById("preview");
+                            var ctx = canvas.getContext("2d");
+
+                            ctx.setFillColor = "white";
+                            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                            canvas.width = 0;
+                            canvas.height = 0;
+                            var file = document.getElementById("profilepicfile").files[0];
+                            var img = document.createElement("img");
+                            var reader = new FileReader();
+
+                            reader.onload = function (e) {
+                                if (!file.type.match(/image.*/)) {
+                                    document.getElementById("profilepicfile").setCustomValidity("Il faut télécharger une image.");
+                                    document.getElementById("profilepicfile").value = "";
+                                } else {
+                                    img.src = e.target.result;
+                                    document.getElementById("profilepicfile").setCustomValidity("");
+                                    var MAX_WIDTH = 96;
+                                    var MAX_HEIGHT = 96;
+                                    var width = img.width;
+                                    var height = img.height;
+                                    var ratio = null;
+
+                                    if (width > height) {
+                                        if (width > MAX_WIDTH) {
+                                            ratio = width / MAX_WIDTH;
+                                            width = MAX_WIDTH;
+                                            height = height / ratio;
+                                        }
+                                    } else {
+                                        if (height > MAX_HEIGHT) {
+                                            ratio = height / MAX_HEIGHT;
+                                            height = MAX_HEIGHT;
+                                            width = width / ratio;
+                                        }
+                                    }
+
+                                    canvas.width = width;
+                                    canvas.height = height;
+                                    ctx.drawImage(img, 0, 0, width, height);
+                                    document.getElementById("profilepic").value = canvas.toDataURL("image/png");
+                                }
+                            };
+
+                            reader.readAsDataURL(file);
+                        }
+                    </script>
+                </div>
+                <br/>
+                <div class="form-group text-center">
+                    <input class="btn btn-primary" type="submit" value="S'inscrire">
+                    <br />
+                    <br />
+                    <a href="/login" class="btn btn-link">Déjà inscrit ?</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<% include foot %>
