@@ -4,7 +4,7 @@ module.exports = function(passport) {
     passport.use(new FacebookStrategy({
             clientID        : '1494136717561593',
             clientSecret    : 'deb7f211e2d0e299eac1c812e48d583b',
-            callbackURL     : 'http://localhost:1313/auth/facebook/callback',
+            callbackURL     : 'http://paint.jeremyfroment.fr/auth/facebook/callback',
             profileFields   : ['id, last_name, first_name, gender, email, birthday, location, website, picture']
         },
         function(token, refreshToken, profile, done) {

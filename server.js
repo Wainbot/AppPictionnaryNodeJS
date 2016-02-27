@@ -1,4 +1,4 @@
-var port            = process.env.PORT || 1313;
+var port            = process.env.PORT || 80;
 var express         = require('express');
 var morgan          = require('morgan');
 var logger          = require('log4js').getLogger('Server');
@@ -11,10 +11,10 @@ var passwordHasher  = require('password-hasher');
 var app             = express();
 var infoConnexion   = {
     host     : 'localhost',
-    user     : 'test',
-    password : 'test',
+    user     : 'root',
+    password : 'root',
     database : 'pictionnary',
-    port     : 8889
+    port     : 3306
 };
 
 // SET
