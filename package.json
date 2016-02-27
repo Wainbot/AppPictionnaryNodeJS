@@ -1,7 +1,7 @@
 {
   "name": "tplpsil",
   "version": "0.0.1",
-  "description": "Authentification NodeJs",
+  "description": "TP Pictionnary en NodeJS",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"

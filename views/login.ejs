@@ -1,34 +1,44 @@
 <% var title = 'Pictionnary - Connexion' %>
 <% include head %>
 
-<div class="col-md-4 col-md-offset-4">
-    <div class="panel panel-default">
-        <div class="panel-heading text-center">Connexion</div>
-        <div class="panel-body">
-            <form method="post" action="/login" class="form-horizontal col-md-10 col-md-offset-1">
-                <div class="form-group">
-                    <div class="col-md-12">
-                        <input class="form-control input-md text-center" type="text" name="email" id="email" placeholder="Email" required/>
+<div class="col-md-10 col-md-offset-1">
+    <div class="col-md-6">
+        <div class="panel panel-default" style="min-height: 280px;">
+            <div class="panel-heading text-center">Connexion</div>
+            <div class="panel-body">
+                <form method="post" action="/login" class="form-horizontal col-md-10 col-md-offset-1">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <input class="form-control input-md text-center" type="text" name="email" id="email" placeholder="Email" required/>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-12">
-                        <input class="form-control input-md text-center" type="password" name="password" id="password" placeholder="Mot de passe" required/>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <input class="form-control input-md text-center" type="password" name="password" id="password" placeholder="Mot de passe" required/>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group text-center">
-                    <input class="btn btn-primary" type="submit" value="Se connecter">
-                    <br />
-                    <br />
-                    <a href="/auth/facebook" class="btn btn-default" style="background: #3B5998; color: #FFF;">
-                        <span class="fa fa-facebook"></span>
-                        &nbsp;&nbsp;|&nbsp;&nbsp;Se connecter avec Facebook
-                    </a>
-                    <br />
-                    <br />
-                    <a href="/register" class="btn btn-link">Pas encore inscrit ?</a>
-                </div>
-            </form>
+                    <div class="form-group text-center">
+                        <input class="btn btn-primary" type="submit" value="Se connecter">
+                        <br />
+                        <br />
+                        <a href="/register" class="btn btn-link">Pas encore inscrit ?</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="panel panel-default" style="min-height: 280px;">
+            <div class="panel-heading text-center">OU</div>
+            <div class="panel-body text-center">
+                <br />
+                <br />
+                <br />
+                <a href="/auth/facebook" class="btn btn-default btn-lg" style="background: #3B5998; color: #FFF;">
+                    <span class="fa fa-facebook"></span>
+                    &nbsp;&nbsp;|&nbsp;&nbsp;Se connecter avec Facebook
+                </a>
+            </div>
         </div>
     </div>
 </div>
